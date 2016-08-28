@@ -1,0 +1,167 @@
+<head>
+  <title>Social Website</title>
+</head>
+
+<body>
+
+</body>
+
+<template name="ApplicationLayout">
+  {{> yield "navbar"}}
+  {{> yield "main"}}
+</template>
+
+<template name="navbar">
+  <!-- navbar  - you will be putting the login functions here -->
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="/">
+          Social Website
+        </a>
+      </div>
+      <div>
+        <ul class="nav navbar-nav">
+          <li>{{> loginButtons}}</li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</template>
+
+<template name="websites">
+  <div class="container">
+    {{> website_form}}
+    {{> website_list}}
+  </div>
+</template>
+
+<template name="website_form">
+  <div class="row">
+    <div id="new_website" class="col-md-1 col-md-offset-11">
+      {{#if currentUser}}
+    	<a class="btn btn-default js-toggle-website-form pull-right" href="#">
+      		<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+    	</a>
+      {{/if}}
+    </div>
+  </div>
+  <div class="row">
+  	<div id="website_form" class="hidden_div">
+  		<form class="js-save-website-form">
+  		  <div class="form-group">
+  		    <label for="url">Site address</label>
+  		    <input type="text" class="form-control" id="url" placeholder="http://www.mysite.com">
+  		  </div>
+  		  <div class="form-group">
+  		    <label for="title">Title</label>
+  		    <input type="text" class="form-control" id="title" placeholder="Mysite">
+  		  </div>
+  		    <div class="form-group">
+  		    <label for="description">Description</label>
+  		    <input type="text" class="form-control" id="description" placeholder="I found this site really useful for ...">
+  		  </div>
+
+  		  <button type="submit" class="btn btn-default">Submit</button>
+  		</form>
+  	</div>
+  </div>
+</template>
+
+<!-- template that displays several website items -->
+<template name="website_list">
+	<ol class="list-group">
+	  {{#each websites}}
+	    {{>website_item}}
+	  {{/each}}
+	</ol>
+</template>
+
+<!-- template that displays individual website entries -->
+<template name="website_item">
+<li class="list-group-item">
+	<a class="website_title" href="/websites/{{_id}}">{{title}}</a>
+  <p>
+    <i><a href={{url}}>{{url}}</a></i>
+  </p>
+	<p>
+		{{description}}
+	</p>
+	<a href="#" class="btn btn-default js-upvote">
+		<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"> {{positive_votes.length}}</span>
+	</a>
+	<a href="#" class="btn btn-default js-downvote">
+		<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"> {{negative_votes.length}}</span>
+	</a>
+	<!-- you will be putting your up and down vote buttons in here! -->
+</li>
+</template>
+
+<template name="website_detail">
+  <div class="container">
+    <div class="row">
+      <h1>{{title}}</h1>
+    </div>
+    <div class="row">
+      <i><a href={{url}}>{{url}}</a></i>
+    </div>
+    <div class="row">
+      <div class="col-md-2 col-md-offset-10">
+        <a href="#" class="btn btn-default js-upvote">
+      		<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"> {{positive_votes.length}}</span>
+      	</a>
+      	<a href="#" class="btn btn-default js-downvote">
+      		<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"> {{negative_votes.length}}</span>
+      	</a>
+      </div>
+    </div>
+    <div class="row">
+      <span class="date">Published on {{formatDate createdOn}}</span>
+    </div>
+    <div class="row">
+      {{description}}
+    </div>
+    <div class="row">
+      <hr>
+    </div>
+    {{> comment_form}}
+    {{> comment_list _website_id=_id}}
+  </div>
+</template>
+
+<template name="comment_form">
+  <div class="row">
+    <form class="js-save-comment-form">
+      <div class="form-group">
+        <input type="hidden" id="website_id" value="{{_id}}">
+        <input type="text" class="form-control" id="text" placeholder="Add here your comment">
+      </div>
+
+      <button type="submit" class="btn btn-primary pull-right">Publish</button>
+    </form>
+  </div>
+</template>
+
+<template name="comment_list">
+  <div class="row">
+    <h5>
+      COMMENTS · {{comments.count}}
+    </h5>
+  </div>
+  <ul class="list-unstyled">
+    {{#each comments}}
+      {{>comment_item}}
+    {{/each}}
+  </ul>
+</template>
+
+<template name="comment_item">
+  <li>
+    <div class="row">
+      <a href="#">{{getUsername createdBy}}</a> <span class="short_date">{{formatDate createdOn 'relative'}}</span>
+    </div>
+    <div class="row">
+      {{text}}
+    </div>
+  </li>
+</template>

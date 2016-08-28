@@ -1,0 +1,29 @@
+/* CSS declarations go here */
+.hidden_div{
+	display:none;
+}
+
+#new_website {
+	margin-bottom: 10px;
+}
+
+#website_form {
+	margin-bottom: 50px;
+}
+
+.list-group-item {
+    display: list-item;
+		list-style: decimal inside;
+}
+
+.website_title {
+	font-size: 1.5em;
+}
+
+.date {
+	font-weight: bold;
+}
+
+.short_date {
+	font-size: 0.8em;
+}
