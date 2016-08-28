@@ -3,6 +3,14 @@
 	display:none;
 }
 
+#login-dropdown-list {
+	left: -160px;
+}
+
+#login-dropdown-list .login-close-text {
+	float: right;
+}
+
 #new_website {
 	margin-bottom: 10px;
 }

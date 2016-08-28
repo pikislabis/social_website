@@ -87,6 +87,7 @@ Template.website_form.events({
         url:url,
         title:title,
         description:description,
+        votes: 0,
         positive_votes: [],
         negative_votes: [],
         createdOn:new Date(),

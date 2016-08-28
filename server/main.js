@@ -1,5 +1,4 @@
 /*jshint esversion: 6 */
-
 import { Meteor } from 'meteor/meteor';
 
 Meteor.startup(() => {
@@ -42,5 +41,29 @@ Meteor.startup(() => {
       negative_votes: [],
       createdOn:new Date()
     });
+  }
+});
+
+// Hooks
+Websites.before.insert(function (userId, doc) {
+
+  if(doc.title && doc.description){
+    return true;
+  } else {
+
+    // Prepend, if necessary http
+    if(!doc.url.startsWith('http')){
+      doc.url = 'http://' + doc.url;
+    }
+
+    result = ScrapeParser.get(doc.url);
+
+    if(doc.title === ''){
+      doc.title = result.title;
+    }
+
+    if(doc.description === ''){
+      doc.description = result.description;
+    }
   }
 });
