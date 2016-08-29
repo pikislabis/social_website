@@ -45,7 +45,9 @@ Meteor.startup(() => {
 });
 
 ///SearchSource options
-SearchSource.defineSource('websites', function(searchText, options) {
+SearchSource.defineSource('websites', function(searchText, _options) {
+  var options = {sort: { votes: -1, createdOn: -1 }};
+
   if(searchText) {
     var regExp = buildRegExp(searchText);
     var selector = {$or: [

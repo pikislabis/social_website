@@ -4,50 +4,7 @@ import { Template } from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var';
 
 import './main.html';
-
-/// routing
-Router.configure({
-  layoutTemplate: 'ApplicationLayout'
-});
-
-Router.route('/', function () {
-  this.render('navbar', {
-    to:"navbar"
-  });
-  this.render('websites', {
-    to: 'main',
-    onBeforeAction:function () {
-      Session.set('search', '');
-    }
-  });
-});
-
-Router.route('/websites', function () {
-  this.render('navbar', {
-    to:"navbar"
-  });
-  this.render('websites', {
-    to: 'main',
-    onBeforeAction:function () {
-      Session.set('search', '');
-    }
-  });
-});
-
-Router.route('/websites/:_id', function () {
-  this.render('navbar', {
-    to:"navbar"
-  });
-  this.render('website_detail', {
-    to:"main",
-    data:function(){
-      return Websites.findOne({_id:this.params._id});
-    },
-    onBeforeAction:function () {
-      Session.set('website_id', this.params._id);
-    }
-  });
-});
+import './routes.js';
 
 /// accounts config
 Accounts.ui.config({
@@ -119,10 +76,14 @@ Template.searchBox.events({
 
 Template.website_list.helpers({
   websites: function() {
-    WebsitesSearch.search(Session.get('search'));
-    return WebsitesSearch.getData({
-      sort: { votes: -1, createdOn: -1 }
-    });
+    if(Session.get('search')){
+      WebsitesSearch.search(Session.get('search'));
+      return WebsitesSearch.getData({
+        sort: { votes: -1, createdOn: -1 }
+      });
+    } else {
+      return Websites.find({}, {sort: { votes: -1, createdOn: -1 }});
+    }
   }
 });
 
