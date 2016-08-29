@@ -6,7 +6,6 @@ import { ReactiveVar } from 'meteor/reactive-var';
 import './main.html';
 
 /// routing
-
 Router.configure({
   layoutTemplate: 'ApplicationLayout'
 });
@@ -16,7 +15,10 @@ Router.route('/', function () {
     to:"navbar"
   });
   this.render('websites', {
-    to:"main"
+    to: 'main',
+    onBeforeAction:function () {
+      Session.set('search', '');
+    }
   });
 });
 
@@ -25,7 +27,10 @@ Router.route('/websites', function () {
     to:"navbar"
   });
   this.render('websites', {
-    to:"main"
+    to: 'main',
+    onBeforeAction:function () {
+      Session.set('search', '');
+    }
   });
 });
 
@@ -49,6 +54,14 @@ Accounts.ui.config({
   passwordSignupFields: "USERNAME_AND_EMAIL"
 });
 
+/// search config
+WebsitesSearch =
+  new SearchSource(
+    'websites', ['title', 'description'],
+    {keepHistory: 100 * 60 * 5, localSearch: true}
+  );
+
+/// Templates
 Template.registerHelper('formatDate', function(date, format = 'absolute') {
   if(format === 'relative'){
     return moment(date).fromNow();
@@ -65,9 +78,6 @@ Template.registerHelper('getUsername', function(user_id) {
   else {
     return "anon";
   }
-});
-
-Template.website_form.helpers({
 });
 
 Template.website_form.events({
@@ -100,9 +110,19 @@ Template.website_form.events({
   }
 });
 
+Template.searchBox.events({
+  "keyup #searchbox": _.throttle(function(e) {
+    var text = $(e.target).val().trim();
+    Session.set('search', text);
+  }, 200)
+});
+
 Template.website_list.helpers({
-  websites: function(){
-    return Websites.find({}, {sort:{votes: -1, createdOn: -1}});
+  websites: function() {
+    WebsitesSearch.search(Session.get('search'));
+    return WebsitesSearch.getData({
+      sort: { votes: -1, createdOn: -1 }
+    });
   }
 });
 

@@ -5,7 +5,7 @@ Meteor.startup(() => {
   // code to run on server at startup
   if (!Websites.findOne()){
     console.log("No websites yet. Creating starter data.");
-      Websites.insert({
+    Websites.insert({
       title:"Goldsmiths Computing Department",
       url:"http://www.gold.ac.uk/computing/",
       description:"This is where this course was developed.",
@@ -14,7 +14,7 @@ Meteor.startup(() => {
       negative_votes: [],
       createdOn:new Date()
     });
-     Websites.insert({
+    Websites.insert({
       title:"University of London",
       url:"http://www.londoninternational.ac.uk/courses/undergraduate/goldsmiths/bsc-creative-computing-bsc-diploma-work-entry-route",
       description:"University of London International Programme.",
@@ -23,7 +23,7 @@ Meteor.startup(() => {
       negative_votes: [],
       createdOn:new Date()
     });
-     Websites.insert({
+    Websites.insert({
       title:"Coursera",
       url:"http://www.coursera.org",
       description:"Universal access to the world’s best education.",
@@ -44,7 +44,30 @@ Meteor.startup(() => {
   }
 });
 
-// Hooks
+///SearchSource options
+SearchSource.defineSource('websites', function(searchText, options) {
+  if(searchText) {
+    var regExp = buildRegExp(searchText);
+    var selector = {$or: [
+      {title: regExp},
+      {description: regExp}
+    ]};
+
+    results = Websites.find(selector, options).fetch();
+
+    return results;
+  } else {
+    return Websites.find({}, options).fetch();
+  }
+});
+
+function buildRegExp(searchText) {
+  // this is a dumb implementation
+  var parts = searchText.trim().split(/[ \-\:]+/);
+  return new RegExp("(" + parts.join('|') + ")", "ig");
+}
+
+///Hooks
 Websites.before.insert(function (userId, doc) {
 
   if(doc.title && doc.description){

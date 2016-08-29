@@ -35,3 +35,31 @@
 .short_date {
 	font-size: 0.8em;
 }
+
+/* Search input */
+.stylish-input-group {
+	margin-bottom: 10px;
+}
+
+.stylish-input-group .input-group-addon{
+    background: white !important;
+}
+
+.stylish-input-group .form-control{
+	border-right:0;
+	box-shadow:0 0 0;
+	border-color:#ccc;
+}
+
+.stylish-input-group #searchbox {
+	height: 35px;
+}
+
+.stylish-input-group button{
+    border:0;
+    background:transparent;
+}
+
+.stylish-input-group button span {
+	color: #337ab7;
+}

@@ -28,3 +28,6 @@ momentjs:moment
 session
 bobbigmac:scrape-parser
 matb33:collection-hooks
+meteorhacks:search-source
+check
+ejson
