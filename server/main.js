@@ -55,16 +55,13 @@ SearchSource.defineSource('websites', function(searchText, _options) {
       {description: regExp}
     ]};
 
-    results = Websites.find(selector, options).fetch();
-
-    return results;
+    return Websites.find(selector, options).fetch();
   } else {
     return Websites.find({}, options).fetch();
   }
 });
 
 function buildRegExp(searchText) {
-  // this is a dumb implementation
   var parts = searchText.trim().split(/[ \-\:]+/);
   return new RegExp("(" + parts.join('|') + ")", "ig");
 }

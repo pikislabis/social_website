@@ -8,7 +8,13 @@
 
 <template name="ApplicationLayout">
   {{> yield "navbar"}}
-  {{> yield "main"}}
+  {{> topbar}}
+  <div class="container">
+    <div class="row">
+      {{> yield "main"}}
+      {{> yield "sidebar"}}
+    </div>
+  </div>
 </template>
 
 <template name="navbar">
@@ -33,9 +39,15 @@
   </nav>
 </template>
 
-<template name="websites">
+<template name="topbar">
   <div class="container">
     {{> website_form}}
+    {{> searchBox}}
+  </div>
+</template>
+
+<template name="websites">
+  <div class="col-md-8">
     {{> website_list}}
   </div>
 </template>
@@ -75,7 +87,7 @@
 
 <template name="searchBox">
   <div class="row">
-    <div class="col-md-2">
+    <div class="col-md-3">
       <div class="input-group stylish-input-group">
         <input type="text" class="form-control" id="searchbox" placeholder="Search...">
         <span class="input-group-addon">
@@ -90,7 +102,6 @@
 
 <!-- template that displays several website items -->
 <template name="website_list">
-  {{> searchBox}}
 	<ol class="list-group">
 	  {{#each websites}}
 	    {{>website_item}}
@@ -100,22 +111,22 @@
 
 <!-- template that displays individual website entries -->
 <template name="website_item">
-<li class="list-group-item">
-	<a class="website_title" href="/websites/{{_id}}">{{title}}</a>
-  <p>
-    <i><a href={{url}}>{{url}}</a></i>
-  </p>
-	<p>
-		{{description}}
-	</p>
-	<a href="#" class="btn btn-default js-upvote">
-		<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"> {{positive_votes.length}}</span>
-	</a>
-	<a href="#" class="btn btn-default js-downvote">
-		<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"> {{negative_votes.length}}</span>
-	</a>
-	<!-- you will be putting your up and down vote buttons in here! -->
-</li>
+  <li class="list-group-item">
+  	<a class="website_title" href="/websites/{{_id}}">{{title}}</a>
+    <p>
+      <i><a href={{url}}>{{url}}</a></i>
+    </p>
+  	<p>
+  		{{description}}
+  	</p>
+  	<a href="#" class="btn btn-default js-upvote">
+  		<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"> {{positive_votes.length}}</span>
+  	</a>
+  	<a href="#" class="btn btn-default js-downvote">
+  		<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"> {{negative_votes.length}}</span>
+  	</a>
+  	<!-- you will be putting your up and down vote buttons in here! -->
+  </li>
 </template>
 
 <template name="website_detail">
@@ -147,6 +158,23 @@
     </div>
     {{> comment_form}}
     {{> comment_list _website_id=_id}}
+  </div>
+</template>
+
+<template name="recommendations">
+  <div class="col-md-4">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Recommendations</h3>
+      </div>
+      <div class="panel-body">
+        <ul>
+          {{#each recommendations}}
+            <li><a href="/websites/{{_id}}">{{title}}</a></li>
+          {{/each}}
+        </ul>
+      </div>
+    </div>
   </div>
 </template>
 

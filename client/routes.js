@@ -13,6 +13,9 @@ Router.route('/', function () {
       Session.set('search', '');
     }
   });
+  this.render('recommendations', {
+    to: 'sidebar'
+  });
 });
 
 Router.route('/websites', function () {
@@ -24,6 +27,9 @@ Router.route('/websites', function () {
     onBeforeAction:function () {
       Session.set('search', '');
     }
+  });
+  this.render('recommendations', {
+    to: 'sidebar'
   });
 });
 

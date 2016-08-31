@@ -87,9 +87,6 @@ Template.website_list.helpers({
   }
 });
 
-Template.website_list.events({
-});
-
 Template.website_item.events({
   "click .js-upvote":function(event){
     // example of how you can access the id for the website in the database
@@ -111,6 +108,10 @@ Template.website_item.events({
 
     return false;// prevent the button from reloading the page
   }
+});
+
+Template.recommendations.helpers({
+  recommendations: function(){}
 });
 
 Template.comment_form.events({
