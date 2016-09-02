@@ -1,0 +1,38 @@
+<template name="comment_form">
+  {{#if currentUser}}
+    <div class="row">
+      <form class="js-save-comment-form">
+        <div class="form-group">
+          <input type="hidden" id="website_id" value="{{_id}}">
+          <input type="text" class="form-control" id="text" placeholder="Add here your comment">
+        </div>
+
+        <button type="submit" class="btn btn-primary pull-right">Publish</button>
+      </form>
+    </div>
+  {{/if}}
+</template>
+
+<template name="comment_list">
+  <div class="row">
+    <h5>
+      COMMENTS · {{comments.count}}
+    </h5>
+  </div>
+  <ul class="list-unstyled">
+    {{#each comments}}
+      {{>comment_item}}
+    {{/each}}
+  </ul>
+</template>
+
+<template name="comment_item">
+  <li>
+    <div class="row">
+      <a href="#">{{getUsername createdBy}}</a> <span class="short_date">{{formatDate createdOn 'relative'}}</span>
+    </div>
+    <div class="row">
+      {{text}}
+    </div>
+  </li>
+</template>

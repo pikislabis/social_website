@@ -1,70 +1,10 @@
 /*jshint esversion: 6 */
 import { Meteor } from 'meteor/meteor';
 
-Meteor.startup(() => {
-  // code to run on server at startup
-  if (!Websites.findOne()){
-    console.log("No websites yet. Creating starter data.");
-    Websites.insert({
-      title:"Goldsmiths Computing Department",
-      url:"http://www.gold.ac.uk/computing/",
-      description:"This is where this course was developed.",
-      votes: 0,
-      positive_votes: [],
-      negative_votes: [],
-      createdOn:new Date()
-    });
-    Websites.insert({
-      title:"University of London",
-      url:"http://www.londoninternational.ac.uk/courses/undergraduate/goldsmiths/bsc-creative-computing-bsc-diploma-work-entry-route",
-      description:"University of London International Programme.",
-      votes: 0,
-      positive_votes: [],
-      negative_votes: [],
-      createdOn:new Date()
-    });
-    Websites.insert({
-      title:"Coursera",
-      url:"http://www.coursera.org",
-      description:"Universal access to the world’s best education.",
-      votes: 0,
-      positive_votes: [],
-      negative_votes: [],
-      createdOn:new Date()
-    });
-    Websites.insert({
-      title:"Google",
-      url:"http://www.google.com",
-      description:"Popular search engine.",
-      votes: 0,
-      positive_votes: [],
-      negative_votes: [],
-      createdOn:new Date()
-    });
-  }
-});
-
-///SearchSource options
-SearchSource.defineSource('websites', function(searchText, _options) {
-  var options = {sort: { votes: -1, createdOn: -1 }};
-
-  if(searchText) {
-    var regExp = buildRegExp(searchText);
-    var selector = {$or: [
-      {title: regExp},
-      {description: regExp}
-    ]};
-
-    return Websites.find(selector, options).fetch();
-  } else {
-    return Websites.find({}, options).fetch();
-  }
-});
-
-function buildRegExp(searchText) {
-  var parts = searchText.trim().split(/[ \-\:]+/);
-  return new RegExp("(" + parts.join('|') + ")", "ig");
-}
+import '../imports/startup/server/fixtures.js';
+import '../imports/startup/server/websites-search.js';
+import '../imports/api/websites.js';
+import '../imports/api/comments.js';
 
 ///Hooks
 Websites.before.insert(function (userId, doc) {
